@@ -1,29 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 
 export default function CheckoutPage() {
-  // Example dynamic products (এগুলো পরে cart থেকে আসবে)
-  const [products, setProducts] = useState([
-    {
-      id: "p1",
-      name: "প্রিমিয়াম মসলা",
-      price: 1450,
-      quantity: 1,
-      size: "1 KG",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFqhQmr7mp-1x-7TdklpUTDFvSsPcDCHbOOg&s",
-      selected: false,
-    },
-    {
-      id: "p2",
-      name: "প্রিমিয়াম মসলা",
-      price: 780,
-      quantity: 1,
-      size: "500 GRAM",
-      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTFqhQmr7mp-1x-7TdklpUTDFvSsPcDCHbOOg&s",
-      selected: false,
-    },
-  ]);
-
+  const [products, setProducts] = useState([]);
   const [shipping, setShipping] = useState("");
   const [customer, setCustomer] = useState({
     name: "",
@@ -32,12 +11,28 @@ export default function CheckoutPage() {
     notes: "",
   });
 
+  // Fetch products from backend
+  useEffect(() => {
+    axios
+      .get("http://localhost:5000/products")
+      .then((res) => {
+        // add "selected" and "quantity" field for frontend state
+        const modified = res.data.map((p) => ({
+          ...p,
+          quantity: 1,
+          selected: false,
+        }));
+        setProducts(modified);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+
   // শুধু selected product এর উপর ভিত্তি করে হিসাব হবে
   const subtotal = products
     .filter((p) => p.selected)
     .reduce((acc, p) => acc + p.price * p.quantity, 0);
 
-  const total = subtotal + shipping;
+  const total = subtotal + (shipping || 0);
 
   // Handle billing input
   const handleChange = (e) => {
@@ -48,7 +43,7 @@ export default function CheckoutPage() {
   const updateQuantity = (id, type) => {
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === id
+        p._id === id
           ? {
               ...p,
               quantity:
@@ -63,7 +58,7 @@ export default function CheckoutPage() {
   const toggleSelect = (id) => {
     setProducts((prev) =>
       prev.map((p) =>
-        p.id === id ? { ...p, selected: !p.selected } : p
+        p._id === id ? { ...p, selected: !p.selected } : p
       )
     );
   };
@@ -101,28 +96,34 @@ export default function CheckoutPage() {
         {/* Left Side - Billing & Shipping */}
         <div className="space-y-6">
           {/* Product List */}
-          <div className="">
+          <div>
             <h2 className="text-xl font-bold mb-4">প্রোডাক্ট সিলেক্ট করুন</h2>
             <div className="space-y-3 border rounded-md p-4">
               {products.map((p) => (
                 <div
-                  key={p.id}
+                  key={p._id}
                   className="flex items-center gap-3 border-b pb-2"
                 >
                   <input
                     type="checkbox"
                     checked={p.selected}
-                    onChange={() => toggleSelect(p.id)}
+                    onChange={() => toggleSelect(p._id)}
                   />
-                  <img src={p.image} alt={p.name} className="w-16 h-16" />
+                  <img
+                    src={p.image}
+                    alt={p.name}
+                    className="w-20 h-20 object-cover"
+                  />
                   <div className="flex flex-col w-full">
-                    <span className="font-medium">{p.name} ({p.size})</span>
+                    <span className="font-medium">
+                      {p.name} ({p.size})
+                    </span>
                     <div className="flex items-center justify-between mt-1">
                       {/* Quantity Control */}
                       <div className="flex items-center gap-2">
                         <button
                           className="px-2 py-1 bg-gray-200 rounded"
-                          onClick={() => updateQuantity(p.id, "dec")}
+                          onClick={() => updateQuantity(p._id, "dec")}
                           disabled={!p.selected}
                         >
                           -
@@ -130,7 +131,7 @@ export default function CheckoutPage() {
                         <span>{p.quantity}</span>
                         <button
                           className="px-2 py-1 bg-gray-200 rounded"
-                          onClick={() => updateQuantity(p.id, "inc")}
+                          onClick={() => updateQuantity(p._id, "inc")}
                           disabled={!p.selected}
                         >
                           +
@@ -157,6 +158,7 @@ export default function CheckoutPage() {
                 className="w-full border p-3 rounded-md"
                 value={customer.name}
                 onChange={handleChange}
+                required
               />
               <input
                 type="text"
@@ -165,6 +167,16 @@ export default function CheckoutPage() {
                 className="w-full border p-3 rounded-md"
                 value={customer.phone}
                 onChange={handleChange}
+                required
+              />
+              <input
+                type="email"
+                name="email"
+                placeholder="ইমেইল *"
+                className="w-full border p-3 rounded-md"
+                value={customer.email}
+                onChange={handleChange}
+                required
               />
               <input
                 type="text"
@@ -173,6 +185,7 @@ export default function CheckoutPage() {
                 className="w-full border p-3 rounded-md"
                 value={customer.address}
                 onChange={handleChange}
+                required
               />
               <textarea
                 name="notes"
@@ -217,7 +230,7 @@ export default function CheckoutPage() {
             {products
               .filter((p) => p.selected)
               .map((p) => (
-                <div key={p.id} className="flex justify-between">
+                <div key={p._id} className="flex justify-between">
                   <span>
                     {p.name} × {p.quantity}
                   </span>

@@ -9,6 +9,7 @@ import Login from "../Authentication/Login";
 import SignUp from "../Authentication/SignUp";
 import AddProduct from "../Pages/Dashboard/Admin/AddProduct";
 import AllProducts from "../Pages/Dashboard/Admin/AllProducts";
+import AllOrders from "../Pages/Dashboard/Admin/AllOrders";
 
 
   export const router = createBrowserRouter([
@@ -47,6 +48,10 @@ import AllProducts from "../Pages/Dashboard/Admin/AllProducts";
          {
         path: "allProducts",
         element: <AllProducts></AllProducts>,
+      },
+         {
+        path: "allOrders",
+        element: <AllOrders></AllOrders>,
       },
       
        
