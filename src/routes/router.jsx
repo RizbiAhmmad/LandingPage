@@ -17,4 +17,22 @@ import Home from "../Pages/Home/Home";
         
       ]
     },
+
+ {
+       path: "dashboard",
+      element: <Dashboard></Dashboard>,
+      children:[
+        { index: true, element: <DashboardHome /> },
+         {
+        path: "users",
+        element: <AllUsers></AllUsers>,
+      },
+       {
+        path: "profile",
+        element: <Profile></Profile>,
+      },
+       
+      ]
+    }
+
   ]);
