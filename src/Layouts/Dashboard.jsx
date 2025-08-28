@@ -1,28 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  FaChartBar,
-  FaChartLine,
   FaHome,
-  FaListAlt,
-  FaPalette,
-  FaReceipt,
-  FaRulerCombined,
-  FaStar,
-  FaThList,
-  FaTrademark,
   FaUsers,
-  
 } from "react-icons/fa";
 import { LuLayoutDashboard } from "react-icons/lu";
-import { MdInventory, MdOutlineDashboardCustomize } from "react-icons/md";
+import {  MdOutlineDashboardCustomize } from "react-icons/md";
 import { CgProfile } from "react-icons/cg";
 import { NavLink, Outlet } from "react-router-dom";
 import useAxiosPublic from "@/Hooks/useAxiosPublic";
 import useAuth from "@/Hooks/useAuth";
-import Loading from "@/Shared/Loading";
-import { BiSolidCoupon } from "react-icons/bi";
-import { BsCashCoin } from "react-icons/bs";
-import { IoIosCash } from "react-icons/io";
+import Loading from "../Pages/Shared/Loading";
+
 
 const Dashboard = () => {
   const { user } = useAuth();
@@ -89,15 +77,24 @@ const Dashboard = () => {
                     <FaUsers /> <span>Users</span>
                   </NavLink>
                 </li>
-      
                 <li>
                   <NavLink
-                    to="/dashboard/profile"
+                    to="/dashboard/addProduct"
                     className="flex items-center py-2 space-x-3"
                   >
-                    <CgProfile /> <span>Profile</span>
+                    <FaUsers /> <span>Add Product</span>
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink
+                    to="/dashboard/allProducts"
+                    className="flex items-center py-2 space-x-3"
+                  >
+                    <FaUsers /> <span>All Products</span>
+                  </NavLink>
+                </li>
+      
+                
                 
               </>
             )}
