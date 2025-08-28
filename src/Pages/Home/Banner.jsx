@@ -3,12 +3,10 @@ import { motion } from "framer-motion";
 
 const Banner = () => {
   return (
-    <section
-      className="w-full bg-cover bg-center bg-no-repeat text-white py-20"
-      style={{
-        backgroundImage: `url('https://static.vecteezy.com/system/resources/thumbnails/007/448/146/small_2x/digital-transformation-technology-strategy-the-transformation-of-ideas-and-the-adoption-of-technology-in-business-in-the-digital-age-enhancing-global-business-capabilities-ai-photo.jpg')`,
-      }}
+    <div className=""
+      
     >
+      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-center rounded-md mt-4">
       {/* Optional dark overlay for better text visibility */}
       <div className="py-12 px-4 text-center">
         <motion.h1
@@ -17,7 +15,7 @@ const Banner = () => {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-5xl font-bold mb-4"
         >
-          Grow Your Business with Us
+          Modhuka
         </motion.h1>
 
         <motion.p
@@ -26,7 +24,7 @@ const Banner = () => {
           transition={{ delay: 0.3, duration: 0.7 }}
           className="text-lg md:text-xl mb-8"
         >
-          We build modern websites that bring your brand to life.
+          We Provide you the best Masala.
         </motion.p>
 
         <motion.button
@@ -35,10 +33,20 @@ const Banner = () => {
           transition={{ delay: 0.6, duration: 0.6 }}
           className="bg-white text-green-600 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-gray-100 transition"
         >
-          Get Started
+          Order Now
         </motion.button>
       </div>
-    </section>
+
+      <div>
+        <img
+          src="https://suhana.com/cdn/shop/articles/Garam-to-chat-500x380-2.png?v=1709544704"
+          alt="Banner"
+          className="w-full h-[400px] rounded-md shadow-md"
+        />
+      </div>
+      
+      </div>
+    </div>
   );
 };
 

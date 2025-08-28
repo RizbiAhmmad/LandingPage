@@ -1,5 +1,5 @@
 import React from "react";
-import logo from "../../assets/BangladeshiIT.jpg"; // Update with your actual path
+import logo from "../../assets/BangladeshiIT.jpg"; 
 
 const Navbar = () => {
   return (
