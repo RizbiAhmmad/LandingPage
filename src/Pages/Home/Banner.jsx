@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 
 const Banner = () => {
   return (
-    <div className=""
+    <div className="max-w-5xl mx-auto items-center rounded-md mt-4"
       
     >
-      <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-8 items-center rounded-md mt-4">
+      <div className="">
       {/* Optional dark overlay for better text visibility */}
       <div className="py-12 px-4 text-center">
         <motion.h1
@@ -15,7 +15,7 @@ const Banner = () => {
           transition={{ duration: 0.8 }}
           className="text-4xl md:text-5xl font-bold mb-4"
         >
-          Modhuka
+          খাঁটি ও সুগন্ধি চট্টগ্রামের মেজবানি মাংসের মসলা - রান্নায় আনুন ঐতিহ্যের স্বাদ
         </motion.h1>
 
         <motion.p
@@ -31,20 +31,21 @@ const Banner = () => {
           initial={{ scale: 0.8, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.6 }}
-          className="bg-white text-green-600 font-semibold px-6 py-3 rounded-full shadow-md hover:bg-gray-100 transition"
+          className="bg-[#CE4F26] text-white text-2xl font-extrabold px-12 py-4 rounded-full shadow-md hover:bg-[#a4401e] transition border-4 border-[#BD8B44]"
         >
           Order Now
         </motion.button>
       </div>
 
-      <div>
+     
+      
+      </div>
+       <div>
         <img
           src="https://suhana.com/cdn/shop/articles/Garam-to-chat-500x380-2.png?v=1709544704"
           alt="Banner"
-          className="w-full h-[400px] rounded-md shadow-md"
+          className="w-full object-cover h-full rounded-md shadow-md"
         />
-      </div>
-      
       </div>
     </div>
   );

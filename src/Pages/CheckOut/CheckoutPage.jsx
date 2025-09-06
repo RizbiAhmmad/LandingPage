@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 export default function CheckoutPage() {
   const [products, setProducts] = useState([]);
@@ -7,6 +8,7 @@ export default function CheckoutPage() {
   const [customer, setCustomer] = useState({
     name: "",
     phone: "",
+    email: "",
     address: "",
     notes: "",
   });
@@ -16,7 +18,6 @@ export default function CheckoutPage() {
     axios
       .get("http://localhost:5000/products")
       .then((res) => {
-        // add "selected" and "quantity" field for frontend state
         const modified = res.data.map((p) => ({
           ...p,
           quantity: 1,
@@ -66,8 +67,18 @@ export default function CheckoutPage() {
   // Submit order
   const handleSubmit = async () => {
     const selectedProducts = products.filter((p) => p.selected);
+
+    // === Validation ===
+    if (!customer.name || !customer.phone || !customer.email || !customer.address) {
+      Swal.fire("⚠️ Required!", "সবগুলো * চিহ্নিত ফিল্ড পূরণ করুন।", "warning");
+      return;
+    }
     if (selectedProducts.length === 0) {
-      alert("কমপক্ষে একটি প্রোডাক্ট সিলেক্ট করুন!");
+      Swal.fire("⚠️ পণ্য নেই!", "কমপক্ষে একটি প্রোডাক্ট সিলেক্ট করুন।", "warning");
+      return;
+    }
+    if (!shipping) {
+      Swal.fire("⚠️ শিপিং মিসিং!", "একটি শিপিং অপশন সিলেক্ট করুন।", "warning");
       return;
     }
 
@@ -82,11 +93,18 @@ export default function CheckoutPage() {
     };
 
     try {
-      const res = await axios.post("http://localhost:5000/orders", orderData);
-      alert("Order placed successfully!");
-      console.log(res.data);
+      await axios.post("http://localhost:5000/orders", orderData);
+      Swal.fire("✅ Success!", "অর্ডার সফলভাবে প্লেস হয়েছে।", "success");
+
+      // reset form
+      setCustomer({ name: "", phone: "", email: "", address: "", notes: "" });
+      setProducts((prev) =>
+        prev.map((p) => ({ ...p, selected: false, quantity: 1 }))
+      );
+      setShipping("");
     } catch (err) {
       console.error(err);
+      Swal.fire("❌ Error!", "অর্ডার প্লেস করতে সমস্যা হয়েছে।", "error");
     }
   };
 
@@ -158,16 +176,14 @@ export default function CheckoutPage() {
                 className="w-full border p-3 rounded-md"
                 value={customer.name}
                 onChange={handleChange}
-                required
               />
               <input
-                type="text"
+                type="number"
                 name="phone"
                 placeholder="মোবাইল নম্বর *"
                 className="w-full border p-3 rounded-md"
                 value={customer.phone}
                 onChange={handleChange}
-                required
               />
               <input
                 type="email"
@@ -176,7 +192,6 @@ export default function CheckoutPage() {
                 className="w-full border p-3 rounded-md"
                 value={customer.email}
                 onChange={handleChange}
-                required
               />
               <input
                 type="text"
@@ -185,7 +200,6 @@ export default function CheckoutPage() {
                 className="w-full border p-3 rounded-md"
                 value={customer.address}
                 onChange={handleChange}
-                required
               />
               <textarea
                 name="notes"

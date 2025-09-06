@@ -38,7 +38,7 @@ const AddProduct = () => {
       // Upload image to Cloudinary
       const cloudinaryData = new FormData();
       cloudinaryData.append("file", imageFile);
-      cloudinaryData.append("upload_preset", "eCommerce");
+      cloudinaryData.append("upload_preset", "landing-page");
 
       const cloudinaryRes = await axios.post(
         "https://api.cloudinary.com/v1_1/dt3bgis04/image/upload",
