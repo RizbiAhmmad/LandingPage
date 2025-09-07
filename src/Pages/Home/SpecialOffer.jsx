@@ -2,6 +2,14 @@ import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
 
 export default function SpecialOffer() {
+
+    const handleScroll = () => {
+    const section = document.getElementById("checkout");
+    if (section) {
+      section.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+  
   return (
     <section className="bg-white dark:bg-gray-900 py-12 px-4">
       <div className="max-w-3xl mx-auto text-center relative">
@@ -120,6 +128,7 @@ export default function SpecialOffer() {
 
         {/* Button */}
         <motion.button
+        onClick={handleScroll}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           className="mt-2 inline-flex items-center gap-2 bg-[#E00000] hover:bg-[rgb(203,51,0)] text-white font-extrabold px-10 py-4 rounded-lg shadow-lg border-4 border-[#BD8B44]"

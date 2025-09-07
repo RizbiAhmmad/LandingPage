@@ -3,7 +3,7 @@ import logo from "../../assets/Modhuka.jpg";
 
 const Navbar = () => {
   return (
-    <nav className="w-full bg-white shadow-md py-4">
+    <nav className="w-full bg-white py-4">
       <div className="container mx-auto flex justify-center items-center">
         <img
           src={logo}

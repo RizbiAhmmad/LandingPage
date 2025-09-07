@@ -116,17 +116,21 @@ export default function CheckoutPage() {
   };
 
   return (
-    <section className="bg-white py-6 px-4">
+    <section id="checkout" className="bg-white py-6 px-4">
       <div className="max-w-3xl border-2 border-red-200 mx-auto text-center p-4 mb-8 rounded-md">
         <h1 className="text-3xl font-bold mb-4">
           আপনার অর্ডার সম্পূর্ণ করতে নিচের ফর্মটি পূরণ করুন।
         </h1>
-        <h1 className="text-3xl font-bold text-red-500">
-          প্রয়োজনে কল করুন: 01837840903
-        </h1>
+
+        <a
+          href="tel:01837840903"
+          className="inline-block bg-[#E00000] hover:bg-[rgb(203,51,0) text-white text-2xl font-bold px-6 py-3 rounded-lg shadow-lg transition duration-300"
+        >
+          📞 প্রয়োজনে কল করুন: 01837840903
+        </a>
       </div>
 
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 border-2 border-red-200 p-4 rounded-md">
+      <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-8 border-2 border-red-200 p-4 rounded-md">
         {/* Left Side - Billing & Shipping */}
         <div className="space-y-6">
           {/* Product List */}
@@ -293,7 +297,7 @@ export default function CheckoutPage() {
 
           <button
             onClick={handleSubmit}
-            className="w-full bg-green-500 text-white font-bold py-3 rounded-md hover:bg-green-600"
+            className="w-full bg-[#E00000] hover:bg-[rgb(203,51,0)] text-white font-extrabold px-8 py-3 rounded-lg shadow-lg border-4 border-[#BD8B44] "
           >
             অর্ডার করুন ৳ {total}
           </button>
