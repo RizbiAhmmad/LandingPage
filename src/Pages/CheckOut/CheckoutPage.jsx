@@ -58,9 +58,7 @@ export default function CheckoutPage() {
   // Product select/unselect
   const toggleSelect = (id) => {
     setProducts((prev) =>
-      prev.map((p) =>
-        p._id === id ? { ...p, selected: !p.selected } : p
-      )
+      prev.map((p) => (p._id === id ? { ...p, selected: !p.selected } : p))
     );
   };
 
@@ -69,12 +67,21 @@ export default function CheckoutPage() {
     const selectedProducts = products.filter((p) => p.selected);
 
     // === Validation ===
-    if (!customer.name || !customer.phone || !customer.email || !customer.address) {
+    if (
+      !customer.name ||
+      !customer.phone ||
+      !customer.email ||
+      !customer.address
+    ) {
       Swal.fire("⚠️ Required!", "সবগুলো * চিহ্নিত ফিল্ড পূরণ করুন।", "warning");
       return;
     }
     if (selectedProducts.length === 0) {
-      Swal.fire("⚠️ পণ্য নেই!", "কমপক্ষে একটি প্রোডাক্ট সিলেক্ট করুন।", "warning");
+      Swal.fire(
+        "⚠️ পণ্য নেই!",
+        "কমপক্ষে একটি প্রোডাক্ট সিলেক্ট করুন।",
+        "warning"
+      );
       return;
     }
     if (!shipping) {
@@ -109,8 +116,17 @@ export default function CheckoutPage() {
   };
 
   return (
-    <section className="bg-white dark:bg-black py-10 px-4">
-      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 border border-green-200 p-4 rounded-md">
+    <section className="bg-white py-6 px-4">
+      <div className="max-w-3xl border-2 border-red-200 mx-auto text-center p-4 mb-8 rounded-md">
+        <h1 className="text-3xl font-bold mb-4">
+          আপনার অর্ডার সম্পূর্ণ করতে নিচের ফর্মটি পূরণ করুন।
+        </h1>
+        <h1 className="text-3xl font-bold text-red-500">
+          প্রয়োজনে কল করুন: 01837840903
+        </h1>
+      </div>
+
+      <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-8 border-2 border-red-200 p-4 rounded-md">
         {/* Left Side - Billing & Shipping */}
         <div className="space-y-6">
           {/* Product List */}

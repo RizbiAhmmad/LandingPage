@@ -20,7 +20,7 @@ export default function WhyChooseUs() {
       desc: "বাজারের মসলার মতো আলাদা আলাদা ঝামেলা নেই, আমাদের এক প্যাকেটেই পাবেন সম্পূর্ণ মেজবানি রান্নার সমাধান।",
     },
     {
-      title: "Well Health Brand Guarantee",
+      title: "Modhuka Brand Guarantee",
       desc: "আমাদের প্রতিটি পণ্য ফ্রেশ, হাইজেনিক এবং ট্রাস্টেড সোর্স থেকে সংগ্রহ করে আপনাদের হাতে পৌঁছে দিই।",
     },
   ];
@@ -29,14 +29,14 @@ export default function WhyChooseUs() {
     <section className="bg-white dark:from-black dark:to-gray-900 py-12 px-4">
       <div className="max-w-4xl mx-auto text-center">
         {/* Title */}
-        <motion.h2
-          className="text-2xl md:text-3xl font-bold text-green-700 dark:text-green-400 flex items-center justify-center gap-2"
+        <motion.h1
+          className="text-2xl md:text-4xl font-bold text-red-500 flex items-center justify-center gap-2"
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <CheckCircle2 className="w-7 h-7 text-green-600 dark:text-green-400" />
+          <CheckCircle2 className="w-7 h-7 text-green-600 " />
           মধুকা থেকে কেনো মেজবানি মাংসের মসলা কিনবেন?
-        </motion.h2>
+        </motion.h1>
 
         {/* Features */}
         <div className="mt-8 space-y-6 text-left">
