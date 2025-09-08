@@ -9,7 +9,7 @@ export default function SpecialOffer() {
       section.scrollIntoView({ behavior: "smooth" });
     }
   };
-  
+
   return (
     <section className="bg-white dark:bg-gray-900 py-12 px-4">
       <div className="max-w-3xl mx-auto text-center relative">
@@ -26,7 +26,7 @@ export default function SpecialOffer() {
             {/* Animated Cross (X) */}
             <motion.svg
               viewBox="0 0 120 40"
-              className="absolute -top-2 left-0 w-full h-full text-red-600"
+              className="absolute -top-0 left-0 w-full h-full text-red-600"
             >
               {/* First diagonal line */}
               <motion.line
@@ -43,7 +43,7 @@ export default function SpecialOffer() {
                   duration: 1,
                   ease: "easeInOut",
                   repeat: Infinity,
-                  repeatDelay: 1, // একটু gap রেখে আবার শুরু হবে
+                  repeatDelay: 1, 
                 }}
               />
               {/* Second diagonal line */}
