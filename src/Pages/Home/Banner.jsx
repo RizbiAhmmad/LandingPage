@@ -1,6 +1,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { ShoppingCart } from "lucide-react";
+import bannerImg from "../../../src/assets/modhukaBanner.jpg"
 
 const Banner = () => {
 
@@ -15,15 +16,14 @@ const Banner = () => {
     <div className="max-w-5xl mx-auto items-center rounded-md">
       <div className="">
         {/* Optional dark overlay for better text visibility */}
-        <div className="py-12 px-4 text-center">
+        <div className="py-8 px-4 text-center">
           <motion.h1
             initial={{ opacity: 0, y: -40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-4xl md:text-5xl font-bold mb-6"
+            className="text-2xl md:text-4xl font-bold mb-6 leading-tight"
           >
-            খাঁটি ও সুগন্ধি চট্টগ্রামের মেজবানি মাংসের মসলা - রান্নায় আনুন
-            ঐতিহ্যের স্বাদ
+            চট্টগ্রামের ঐতিহ্যবাহী শাহী মেজবানি মসলা
           </motion.h1>
 
           <motion.p
@@ -31,8 +31,7 @@ const Banner = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.7 }}
             className="text-2xl text-red-500 md:text-3xl font-bold mb-4"
-          >
-            আমরা দিচ্ছি আপনাকে চট্টগ্রামের সেরা মসলা সরবরাহের নিশ্চয়তা।
+          >আমরা দিচ্ছি আপনাকে গ্যারান্টি সহ চট্টগ্রামের অরিজিনাল মেজবানি মসলা 
           </motion.p>
 
           <motion.button
@@ -48,7 +47,7 @@ const Banner = () => {
       </div>
       <div>
         <img
-          src="https://nutrobite.com/cdn/shop/files/WhatsAppImage2025-06-13at12.43.14PM.jpg?v=1749889828&width=1445"
+          src= {bannerImg}
           alt="Banner"
           className="w-full object-cover h-full rounded-md shadow-md"
         />

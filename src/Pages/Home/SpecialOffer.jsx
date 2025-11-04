@@ -83,13 +83,13 @@ export default function SpecialOffer() {
               animate={{ scale: [1, 1.2, 1] }}
               transition={{ repeat: Infinity, duration: 1.5 }}
             >
-              ১১০০/-
+              ১১৯৯/-
             </motion.span>
 
             {/* Circle highlight */}
             <motion.svg
               viewBox="0 0 200 100"
-              className="absolute -top-8 -left-8 w-52 h-28 text-red-500"
+              className="absolute -top-8 -left-8 w-40 md:w-50 h-28 text-red-500"
             >
               <motion.ellipse
                 cx="100"

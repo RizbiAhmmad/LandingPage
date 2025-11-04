@@ -17,7 +17,7 @@ const SignUp = () => {
   const { createUser, updateUserProfile } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from?.pathname || "/"; // ✅ আগের পেজ বা fallback "/"
+  const from = location.state?.from?.pathname || "/";
 
   const onSubmit = (data) => {
     createUser(data.email, data.password)
@@ -32,7 +32,7 @@ const SignUp = () => {
               role: "user",
               createdAt: new Date(),
             };
-            fetch("http://localhost:5000/users", {
+            fetch("https://node.modhuka.com/users", {
               method: "POST",
               headers: {
                 "content-type": "application/json",
@@ -51,7 +51,7 @@ const SignUp = () => {
                     icon: "success",
                     draggable: true,
                   });
-                  navigate(from, { replace: true }); // ✅ এখন সরাসরি আগের পেজে যাবে
+                  navigate(from, { replace: true });
                 }
               })
               .catch((error) =>
@@ -75,7 +75,7 @@ const SignUp = () => {
     >
       <div className="w-full max-w-md p-6 shadow-xl bg-white/20 backdrop-blur-lg rounded-xl sm:p-8">
 
-        {/* ✅ Back Button in normal flow */}
+        {/*  Back Button in normal flow */}
         <div className="mb-4">
           <Link
             to="/"

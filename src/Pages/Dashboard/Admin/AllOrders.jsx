@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
 const AllOrders = () => {
+  const axiosPublic = useAxiosPublic();
   const [orders, setOrders] = useState([]);
 
   useEffect(() => {
@@ -11,7 +12,7 @@ const AllOrders = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/orders");
+      const res = await axiosPublic.get("/orders");
       setOrders(res.data);
     } catch (error) {
       console.error("❌ Fetch Orders Error:", error);
@@ -31,7 +32,7 @@ const AllOrders = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/orders/${id}`);
+          await axiosPublic.delete(`/orders/${id}`);
           Swal.fire("Deleted!", "Order has been deleted.", "success");
           fetchOrders(); // reload list
         } catch (error) {

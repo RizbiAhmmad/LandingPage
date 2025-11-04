@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 export default function CheckoutPage() {
+  const axiosPublic=useAxiosPublic();
   const [products, setProducts] = useState([]);
   const [shipping, setShipping] = useState("");
   const [customer, setCustomer] = useState({
@@ -15,8 +16,8 @@ export default function CheckoutPage() {
 
   // Fetch products from backend
   useEffect(() => {
-    axios
-      .get("http://localhost:5000/products")
+    axiosPublic
+      .get("/products")
       .then((res) => {
         const modified = res.data.map((p) => ({
           ...p,
@@ -67,12 +68,7 @@ export default function CheckoutPage() {
     const selectedProducts = products.filter((p) => p.selected);
 
     // === Validation ===
-    if (
-      !customer.name ||
-      !customer.phone ||
-      !customer.email ||
-      !customer.address
-    ) {
+    if (!customer.name || !customer.phone || !customer.address) {
       Swal.fire("⚠️ Required!", "সবগুলো * চিহ্নিত ফিল্ড পূরণ করুন।", "warning");
       return;
     }
@@ -100,7 +96,7 @@ export default function CheckoutPage() {
     };
 
     try {
-      await axios.post("http://localhost:5000/orders", orderData);
+      await axiosPublic.post("/orders", orderData);
       Swal.fire("✅ Success!", "অর্ডার সফলভাবে প্লেস হয়েছে।", "success");
 
       // reset form
@@ -146,6 +142,7 @@ export default function CheckoutPage() {
                     type="checkbox"
                     checked={p.selected}
                     onChange={() => toggleSelect(p._id)}
+                    className="w-6 h-6 accent-green-500 cursor-pointer"
                   />
                   <img
                     src={p.image}
@@ -153,29 +150,31 @@ export default function CheckoutPage() {
                     className="w-20 h-20 object-cover"
                   />
                   <div className="flex flex-col w-full">
-                    <span className="font-medium">
+                    <span className="font-bold">
                       {p.name} ({p.size})
                     </span>
                     <div className="flex items-center justify-between mt-1">
                       {/* Quantity Control */}
-                      <div className="flex items-center gap-2">
+                      <div className="flex items-center gap-3">
                         <button
-                          className="px-2 py-1 bg-gray-200 rounded"
+                          className="px-3 py-2 bg-gray-300 text-xl font-bold rounded-lg hover:bg-gray-400 transition"
                           onClick={() => updateQuantity(p._id, "dec")}
                           disabled={!p.selected}
                         >
                           -
                         </button>
-                        <span>{p.quantity}</span>
+                        <span className="text-lg font-semibold">
+                          {p.quantity}
+                        </span>
                         <button
-                          className="px-2 py-1 bg-gray-200 rounded"
+                          className="px-3 py-2 bg-gray-300 text-xl font-bold rounded-lg hover:bg-gray-400 transition"
                           onClick={() => updateQuantity(p._id, "inc")}
                           disabled={!p.selected}
                         >
                           +
                         </button>
                       </div>
-                      <span className="font-semibold">
+                      <span className="font-bold">
                         ৳ {p.price * p.quantity}
                       </span>
                     </div>
@@ -242,7 +241,7 @@ export default function CheckoutPage() {
                   checked={shipping === 120}
                   onChange={() => setShipping(120)}
                 />
-                <span>ঢাকার বাইরে: ৳ 120</span>
+                <span>চট্টগ্রামের বাইরে: ৳ 120</span>
               </label>
               <label className="flex items-center gap-3">
                 <input
@@ -251,7 +250,7 @@ export default function CheckoutPage() {
                   checked={shipping === 70}
                   onChange={() => setShipping(70)}
                 />
-                <span>ঢাকার মধ্যে: ৳ 70</span>
+                <span>চট্টগ্রামের মধ্যে: ৳ 70</span>
               </label>
             </div>
           </div>
@@ -290,7 +289,7 @@ export default function CheckoutPage() {
           <div className="bg-gray-100 p-4 rounded-md text-sm text-gray-700">
             <p className="font-semibold mb-2">Cash on delivery</p>
             <p className="text-red-600">
-              ১০০% নিশ্চিত হয়ে অর্ডার করুন। পণ্য হাতে পেয়ে ডেলিভারি ম্যানকে
+              ১০০% নিশ্চিন্তে অর্ডার করুন। পণ্য হাতে পেয়ে ডেলিভারি ম্যানকে
               পেমেন্ট করতে পারবেন।
             </p>
           </div>

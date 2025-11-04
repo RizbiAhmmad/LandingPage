@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { AuthContext } from "../../../provider/AuthProvider";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
 const AddProduct = () => {
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const axiosPublic = useAxiosPublic();
   const [formData, setFormData] = useState({
     name: "",
     price: "",
@@ -40,7 +41,7 @@ const AddProduct = () => {
       cloudinaryData.append("file", imageFile);
       cloudinaryData.append("upload_preset", "landing-page");
 
-      const cloudinaryRes = await axios.post(
+      const cloudinaryRes = await axiosPublic.post(
         "https://api.cloudinary.com/v1_1/dt3bgis04/image/upload",
         cloudinaryData
       );
@@ -57,8 +58,8 @@ const AddProduct = () => {
       };
 
       // Save to backend
-      const res = await axios.post(
-        "http://localhost:5000/products",
+      const res = await axiosPublic.post(
+        "/products",
         productData
       );
 

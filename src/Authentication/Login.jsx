@@ -4,7 +4,6 @@ import Swal from "sweetalert2";
 import SocialLogin from "./SocialLogin";
 import { AuthContext } from "@/provider/AuthProvider";
 
-
 const Login = () => {
   const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();

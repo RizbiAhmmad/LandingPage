@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
 const AllProducts = () => {
   const [products, setProducts] = useState([]);
+  const axiosPublic = useAxiosPublic();
 
   // fetch products
   useEffect(() => {
@@ -12,7 +13,7 @@ const AllProducts = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/products");
+      const res = await axiosPublic.get("/products");
       setProducts(res.data);
     } catch (error) {
       console.error("❌ Fetch Products Error:", error);
@@ -32,7 +33,7 @@ const AllProducts = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          await axios.delete(`http://localhost:5000/products/${id}`);
+          await axiosPublic.delete(`/products/${id}`);
           Swal.fire("Deleted!", "Product has been deleted.", "success");
           fetchProducts(); // reload list
         } catch (error) {
