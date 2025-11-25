@@ -1,7 +1,7 @@
 import Axios  from "axios";
 
 const axiosPublic=Axios.create({
-    baseURL: "https://node.modhuka.com",
+    baseURL: "http://localhost:5000",
    
 })
 const useAxiosPublic = () => {

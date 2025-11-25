@@ -52,7 +52,7 @@ const AuthProvider = ({ children }) => {
   const fetchUserRole = async (email) => {
     if (email) {
       try {
-        const response = await fetch(`https://node.modhuka.com/${email}`);
+        const response = await fetch(`http://localhost:5000/${email}`);
         const userData = await response.json();
         setUserRole(userData?.role || 'user'); 
       } catch (error) {

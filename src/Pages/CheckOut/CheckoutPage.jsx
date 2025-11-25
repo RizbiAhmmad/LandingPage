@@ -63,6 +63,28 @@ export default function CheckoutPage() {
     );
   };
 
+  const handleBkashPayment = async () => {
+  try {
+    const res = await axiosPublic.post("/bkash-checkout", {
+      amount: total,              // total order amount
+      orderID: "ORDER_" + Date.now(),
+      reference: customer.phone,
+      callbackURL: "http://localhost:5000/bkash-callback"
+    });
+
+    if (res.data && res.data.bkashURL) {
+      window.location.href = res.data.bkashURL; // redirect to bKash page
+    } else {
+      Swal.fire("Error", "bKash URL পাওয়া যায়নি!", "error");
+    }
+
+  } catch (err) {
+    console.error(err);
+    Swal.fire("Error", "bKash Payment শুরু করতে সমস্যা হয়েছে", "error");
+  }
+};
+
+
   // Submit order
   const handleSubmit = async () => {
     const selectedProducts = products.filter((p) => p.selected);
@@ -288,11 +310,19 @@ export default function CheckoutPage() {
           {/* Payment Option */}
           <div className="bg-gray-100 p-4 rounded-md text-sm text-gray-700">
             <p className="font-semibold mb-2">Cash on delivery</p>
+           
             <p className="text-red-600">
               ১০০% নিশ্চিন্তে অর্ডার করুন। পণ্য হাতে পেয়ে ডেলিভারি ম্যানকে
               পেমেন্ট করতে পারবেন।
             </p>
           </div>
+           <button
+  onClick={handleBkashPayment}
+  className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg"
+>
+  Pay with bKash
+</button>
+
 
           <button
             onClick={handleSubmit}
