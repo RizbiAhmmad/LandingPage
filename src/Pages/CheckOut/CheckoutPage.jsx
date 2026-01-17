@@ -3,9 +3,9 @@ import Swal from "sweetalert2";
 import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 export default function CheckoutPage() {
-  const axiosPublic=useAxiosPublic();
+  const axiosPublic = useAxiosPublic();
   const [products, setProducts] = useState([]);
-  const [shipping, setShipping] = useState("");
+  const [shipping, setShipping] = useState(120);
   const [customer, setCustomer] = useState({
     name: "",
     phone: "",
@@ -19,17 +19,16 @@ export default function CheckoutPage() {
     axiosPublic
       .get("/products")
       .then((res) => {
-        const modified = res.data.map((p) => ({
+        const modified = res.data.map((p, index) => ({
           ...p,
           quantity: 1,
-          selected: false,
+          selected: index === 0,
         }));
         setProducts(modified);
       })
       .catch((err) => console.error(err));
   }, []);
 
-  // শুধু selected product এর উপর ভিত্তি করে হিসাব হবে
   const subtotal = products
     .filter((p) => p.selected)
     .reduce((acc, p) => acc + p.price * p.quantity, 0);
@@ -51,39 +50,52 @@ export default function CheckoutPage() {
               quantity:
                 type === "inc" ? p.quantity + 1 : Math.max(1, p.quantity - 1),
             }
-          : p
-      )
+          : p,
+      ),
     );
   };
 
   // Product select/unselect
   const toggleSelect = (id) => {
     setProducts((prev) =>
-      prev.map((p) => (p._id === id ? { ...p, selected: !p.selected } : p))
+      prev.map((p) => {
+        if (p._id === id) {
+          const updated = { ...p, selected: !p.selected };
+
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            event: "product_select",
+            product_name: p.name,
+            price: p.price,
+            selected: updated.selected,
+          });
+
+          return updated;
+        }
+        return p;
+      }),
     );
   };
 
   const handleBkashPayment = async () => {
-  try {
-    const res = await axiosPublic.post("/bkash-checkout", {
-      amount: total,              // total order amount
-      orderID: "ORDER_" + Date.now(),
-      reference: customer.phone,
-      callbackURL: "http://localhost:5000/bkash-callback"
-    });
+    try {
+      const res = await axiosPublic.post("/bkash-checkout", {
+        amount: total, // total order amount
+        orderID: "ORDER_" + Date.now(),
+        reference: customer.phone,
+        callbackURL: "https://node.modhuka.com/bkash-callback",
+      });
 
-    if (res.data && res.data.bkashURL) {
-      window.location.href = res.data.bkashURL; // redirect to bKash page
-    } else {
-      Swal.fire("Error", "bKash URL পাওয়া যায়নি!", "error");
+      if (res.data && res.data.bkashURL) {
+        window.location.href = res.data.bkashURL; // redirect to bKash page
+      } else {
+        Swal.fire("Error", "bKash URL পাওয়া যায়নি!", "error");
+      }
+    } catch (err) {
+      console.error(err);
+      Swal.fire("Error", "bKash Payment শুরু করতে সমস্যা হয়েছে", "error");
     }
-
-  } catch (err) {
-    console.error(err);
-    Swal.fire("Error", "bKash Payment শুরু করতে সমস্যা হয়েছে", "error");
-  }
-};
-
+  };
 
   // Submit order
   const handleSubmit = async () => {
@@ -94,14 +106,16 @@ export default function CheckoutPage() {
       Swal.fire("⚠️ Required!", "সবগুলো * চিহ্নিত ফিল্ড পূরণ করুন।", "warning");
       return;
     }
+
     if (selectedProducts.length === 0) {
       Swal.fire(
         "⚠️ পণ্য নেই!",
         "কমপক্ষে একটি প্রোডাক্ট সিলেক্ট করুন।",
-        "warning"
+        "warning",
       );
       return;
     }
+
     if (!shipping) {
       Swal.fire("⚠️ শিপিং মিসিং!", "একটি শিপিং অপশন সিলেক্ট করুন।", "warning");
       return;
@@ -119,13 +133,37 @@ export default function CheckoutPage() {
 
     try {
       await axiosPublic.post("/orders", orderData);
+
+      // GTM purchase event
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "purchase",
+        transaction_id: "ORDER_" + Date.now(),
+        value: total,
+        shipping: shipping,
+        items: selectedProducts.map((p) => ({
+          item_name: p.name,
+          price: p.price,
+          quantity: p.quantity,
+        })),
+      });
+
+      //  Success message
       Swal.fire("✅ Success!", "অর্ডার সফলভাবে প্লেস হয়েছে।", "success");
 
-      // reset form
-      setCustomer({ name: "", phone: "", email: "", address: "", notes: "" });
+      //Reset form
+      setCustomer({
+        name: "",
+        phone: "",
+        email: "",
+        address: "",
+        notes: "",
+      });
+
       setProducts((prev) =>
-        prev.map((p) => ({ ...p, selected: false, quantity: 1 }))
+        prev.map((p) => ({ ...p, selected: false, quantity: 1 })),
       );
+
       setShipping("");
     } catch (err) {
       console.error(err);
@@ -164,7 +202,7 @@ export default function CheckoutPage() {
                     type="checkbox"
                     checked={p.selected}
                     onChange={() => toggleSelect(p._id)}
-                    className="w-6 h-6 accent-green-500 cursor-pointer"
+                    className="w-8 h-8 accent-green-500 cursor-pointer"
                   />
                   <img
                     src={p.image}
@@ -229,7 +267,7 @@ export default function CheckoutPage() {
               <input
                 type="email"
                 name="email"
-                placeholder="ইমেইল *"
+                placeholder="ইমেইল "
                 className="w-full border p-3 rounded-md"
                 value={customer.email}
                 onChange={handleChange}
@@ -262,6 +300,7 @@ export default function CheckoutPage() {
                   name="shipping"
                   checked={shipping === 120}
                   onChange={() => setShipping(120)}
+                  className="scale-125 accent-red-600 cursor-pointer"
                 />
                 <span>চট্টগ্রামের বাইরে: ৳ 120</span>
               </label>
@@ -271,6 +310,7 @@ export default function CheckoutPage() {
                   name="shipping"
                   checked={shipping === 70}
                   onChange={() => setShipping(70)}
+                  className="scale-125 accent-red-600 cursor-pointer"
                 />
                 <span>চট্টগ্রামের মধ্যে: ৳ 70</span>
               </label>
@@ -310,19 +350,18 @@ export default function CheckoutPage() {
           {/* Payment Option */}
           <div className="bg-gray-100 p-4 rounded-md text-sm text-gray-700">
             <p className="font-semibold mb-2">Cash on delivery</p>
-           
+
             <p className="text-red-600">
               ১০০% নিশ্চিন্তে অর্ডার করুন। পণ্য হাতে পেয়ে ডেলিভারি ম্যানকে
               পেমেন্ট করতে পারবেন।
             </p>
           </div>
-           <button
-  onClick={handleBkashPayment}
-  className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg"
->
-  Pay with bKash
-</button>
-
+          {/* <button
+            onClick={handleBkashPayment}
+            className="w-full bg-pink-600 hover:bg-pink-700 text-white font-bold py-3 rounded-lg"
+          >
+            Pay with bKash
+          </button> */}
 
           <button
             onClick={handleSubmit}

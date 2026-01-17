@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import img1 from "../../assets/Modhuka1.jpg";
+import img1 from "../../assets/Modhuka11.jpg";
 import img2 from "../../assets/Modhuka1.jpeg";
 
 export default function Gallery() {
@@ -32,6 +32,8 @@ export default function Gallery() {
                 <img
                   src={item.src}
                   alt={`Gallery ${index + 1}`}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-180 object-cover transform group-hover:scale-110 transition duration-500"
                 />
                 <div className="absolute inset-0 bg-black/0 opacity-0 group-hover:opacity-20 transition duration-500" />
@@ -60,6 +62,7 @@ export default function Gallery() {
             viewport={{ once: true }}
           >
             <iframe
+              loading="lazy"
               className="w-full h-[400px]"
               src="https://www.youtube.com/embed/M0kwZLB0RWY"
               title="Special Video"
